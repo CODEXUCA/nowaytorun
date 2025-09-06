@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>???</title>
+        <link rel="icon" type="image/png" href="icon.png">
+
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            #startScreen 
+            {
+                width: 100%;
+                height: 100vh;
+                background-image: url('image.png');
+                background-repeat: no-repeat;
+                background-position: top center;
+                background-size: cover;
+                background-attachment: fixed;
+                cursor: default;
+            }
+
+            #randomQuestion 
+            {
+                position: absolute;
+                font-size: 25px;
+                color: white;
+                opacity: 0.2;
+                pointer-events: auto; 
+                cursor: pointer;
+            }
+
+            #blackOverlay 
+            {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: black;
+                pointer-events: none;
+                opacity: 1;
+                animation: fadeOut 60s forwards;
+            }
+
+            @keyframes fadeOut 
+            {
+                from {opacity: 1;}
+                to {opacity: 0;}
+            }
+
+            #video 
+            {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="startScreen"></div>
+        <div id="randomQuestion">?</div>
+        <div id="blackOverlay"></div>
+
+        <video id="video" loop muted>
+            <source src="video.mp4" type="video/mp4">     
+        </video>
+        
+        <audio id="music" loop>
+            <source src="music.ogg" type="audio/ogg">
+        </audio>
+
+        <script>
+            const startScreen = document.getElementById('startScreen');
+            const video = document.getElementById('video');
+            const audio = document.getElementById('music');
+
+            const question = document.getElementById('randomQuestion');
+
+            function placeRandomly() 
+            {
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                const x = Math.random() * (windowWidth - 50);
+                const y = Math.random() * (windowHeight - 50);
+                question.style.left = `${x}px`;
+                question.style.top = `${y}px`;
+            }
+
+            placeRandomly();
+
+            question.addEventListener('click', () => {
+                startScreen.style.display = 'none';
+
+                video.style.display = 'block';
+                video.play();
+
+                audio.play();
+
+                if (document.documentElement.requestFullscreen)
+                    document.documentElement.requestFullscreen();
+                else if (document.documentElement.webkitRequestFullscreen)
+                    document.documentElement.webkitRequestFullscreen();
+                else if (document.documentElement.msRequestFullscreen)
+                    document.documentElement.msRequestFullscreen();
+            });
+        </script>
+    </body>
+</html>
